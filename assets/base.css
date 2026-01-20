@@ -2387,6 +2387,7 @@ product-info .loading-overlay:not(.hidden) ~ *,
 .header__heading-link {
   grid-area: heading;
   justify-self: center;
+  display: none;
 }
 
 .header__heading-link {
@@ -2736,7 +2737,7 @@ details[open] > .header__submenu {
 .header__menu-item {
   padding: 1.2rem;
   text-decoration: none;
-  color: rgba(var(--color-foreground), 0.75);
+  color: rgba(var(--color-foreground));
 }
 
 .header__menu-item:hover {
