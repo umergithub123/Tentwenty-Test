@@ -16,12 +16,15 @@
             {% if block.settings.image != blank %}
               <img src="{{ block.settings.image | img_url: '720x' }}" alt="{{ block.settings.heading }}" class="featured-slider__image">
             {% endif %}
-            {% if block.settings.heading != blank %}
-              <h3 class="featured-slider__slide-heading">{{ block.settings.heading }}</h3>
-            {% endif %}
-            {% if block.settings.subheading != blank %}
-              <p class="featured-slider__slide-subheading">{{ block.settings.subheading }}</p>
-            {% endif %}
+            
+            <div class="slider-content">
+              {% if block.settings.heading != blank %}
+                <h3 class="featured-slider__slide-heading">{{ block.settings.heading }}</h3>
+              {% endif %}
+              {% if block.settings.subheading != blank %}
+                <p class="featured-slider__slide-subheading">{{ block.settings.subheading }}</p>
+              {% endif %}
+            </div>  
           </div>
         {% endfor %}
       </div>
@@ -33,26 +36,69 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    new Swiper('.featured-slider__swiper', {
-      slidesPerView: 1,
-      spaceBetween: 20,
-      loop: true,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+
+    const sliderSection = document.querySelector('.featured-slider__swiper');
+    const slides = document.querySelectorAll('.featured-slider__swiper .swiper-slide');
+
+    function animateSlide(slide) {
+      const heading = slide.querySelector('.slider-content.heading');
+      const subtitle = slide.querySelector('.slider-content.subtitle');
+
+      if (heading) heading.classList.add('animate');
+      if (subtitle) subtitle.classList.add('animate');
+    }
+
+    function resetSlide(slide) {
+      const heading = slide.querySelector('.slider-content.heading');
+      const subtitle = slide.querySelector('.slider-content.subtitle');
+
+      if (heading) heading.classList.remove('animate');
+      if (subtitle) subtitle.classList.remove('animate');
+    }
+
+    var swiper = new Swiper(".featured-slider__swiper", {
+      effect: "coverflow",
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 3,
+      initialSlide: 1,
+      coverflowEffect: {
+        rotate: 50,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true,
+        spaceBetween: 65,
       },
-      breakpoints: {
-        640: {
-          slidesPerView: 1,
+      on: {
+        init: function () {
+          animateSlide(this.slides[this.activeIndex]);
         },
-        768: {
-          slidesPerView: 2,
+        slideChangeTransitionStart: function () {
+          this.slides.forEach(resetSlide);
         },
-        1024: {
-          slidesPerView: 3,
+        slideChangeTransitionEnd: function () {
+          animateSlide(this.slides[this.activeIndex]);
         },
       },
     });
+
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+
+            animateSlide(swiper.slides[swiper.activeIndex]);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.3,
+      }
+    );
+    
+    observer.observe(sliderSection);
   });
   
 </script>  
