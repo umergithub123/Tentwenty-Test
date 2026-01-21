@@ -37,7 +37,9 @@
       ],
       "settings": {
         "logo_position": "middle-center",
-        "menu": "main-menu",
+        "menu": "main-menu-two",
+        "contact_us_text": "Contact us",
+        "contact_us_link": "",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "none",
         "show_line_separator": true,
