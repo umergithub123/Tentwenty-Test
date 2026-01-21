@@ -42,9 +42,51 @@
         "show_navigation": true,
         "show_progress": true
       }
+    },
+    "featured_slider_yVTpEt": {
+      "type": "featured-slider",
+      "blocks": {
+        "slide_mLYpj4": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/image_41_1.jpg",
+            "heading": "",
+            "subheading": ""
+          }
+        },
+        "slide_GNDkAH": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/pexels-christian-diokno-3841338_1.jpg",
+            "heading": "Client 1",
+            "subheading": "Dubai, United Arab Emirates"
+          }
+        },
+        "slide_DqtTXG": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/image_41.jpg",
+            "heading": "",
+            "subheading": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_mLYpj4",
+        "slide_GNDkAH",
+        "slide_DqtTXG"
+      ],
+      "name": "Featured Slider",
+      "settings": {
+        "heading": "Quality Products",
+        "subheading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "padding_top": 155,
+        "padding_bottom": 60
+      }
     }
   },
   "order": [
-    "hero_slider_j8cPqM"
+    "hero_slider_j8cPqM",
+    "featured_slider_yVTpEt"
   ]
 }
