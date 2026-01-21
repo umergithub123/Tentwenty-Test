@@ -39,6 +39,6 @@
 
 @media screen and (min-width: 990px) {
   .custom-header-wrapper .header:not(.drawer-menu).page-width {
-      padding: 40px 33px 40px 39px;
+      padding: 32px 33px 32px 39px;
   }
 }

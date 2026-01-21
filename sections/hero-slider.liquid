@@ -1,0 +1,206 @@
+{{ 'hero-slider.css' | asset_url | stylesheet_tag }}
+<section class="hero-slider">
+  <div class="hero-slider__swiper swiper">
+    <div class="hero-slider__wrapper swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="hero-slider__slide swiper-slide">
+          <div class="hero-slider__media">
+            <picture class="hero-slider__picture">
+              {% if block.settings.image_mobile != blank %}
+                <source media="(max-width: 767px)" srcset="{{ block.settings.image_mobile | image_url: width: 900 }}">
+              {% endif %}
+              {% if block.settings.image_desktop != blank %}
+                <img class="hero-slider__image" src="{{ block.settings.image_desktop | image_url: width: 2000 }}" loading="lazy">
+              {% endif %}  
+            </picture>
+          </div>
+
+          <div class="hero-slider__content">
+            <p class="hero-slider__subtitle">{{ block.settings.subtitle }}</p>
+            <h2 class="hero-slider__heading">{{ block.settings.heading }}</h2>
+
+            {% if section.settings.show_progress or section.settings.show_navigation %}
+              <div class="hero-slider__controls">
+                <button class="hero-slider__next">
+                  <span class="hero-slider__next-progress">
+                    <svg class="hero-slider__next-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <rect
+                        class="hero-slider__next-path"
+                        x="1.5"
+                        y="1.5"
+                        width="97"
+                        height="97"
+                        rx="0"
+                        ry="0"
+                      />
+                    </svg>
+                  </span>
+                  <span class="hero-slider__next-inner">
+                    <img class="hero-slider__next-image" src="{{ block.settings.next_image | image_url: width: 200 }}" loading="lazy">
+                    <span class="hero-slider__next-label">Next</span>
+                  </span>
+                </button>
+            
+                <div class="hero-slider__pagination">
+                  <span class="hero-slider__count hero-slider__count--current">01</span>
+                  <div class="hero-slider__progress">
+                    <span class="hero-slider__progress-bar"></span>
+                  </div>
+                  <span class="hero-slider__count hero-slider__count--total">00</span>
+                </div>
+
+              </div>
+            {% endif %}  
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slider = new Swiper('.hero-slider__swiper', {
+      loop: true,
+      speed: 2000,
+      slidesPerView: 1,
+      autoHeight: false,
+      effect: 'coverflow',
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 0,
+        depth: 200,
+        modifier: 1,
+        slideShadows: false
+      },
+      navigation: {
+        nextEl: '.hero-slider__next'
+      },
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false
+      },
+      on: {
+        init(swiper) {
+          updateCounts(swiper);
+          animateBorder(swiper);
+          animateContent(swiper)
+        },
+        slideChange(swiper) {
+          updateCounts(swiper)
+        },
+        slideChangeTransitionStart(swiper) {
+          resetBorders();
+          resetContent(swiper)
+        },
+        slideChangeTransitionEnd(swiper) {
+          animateBorder(swiper);
+          animateContent(swiper)
+        }
+      }
+    })
+
+  
+    function animateContent(swiper) {
+      const activeSlide = swiper.slides[swiper.activeIndex]
+      activeSlide.classList.add('is-content-active')
+    }
+    
+    function resetContent(swiper) {
+      swiper.slides.forEach(slide => {
+        slide.classList.remove('is-content-active')
+      })
+    }
+    
+    function animateBorder(swiper) {
+      const activeSlide = swiper.slides[swiper.activeIndex]
+      const btn = activeSlide.querySelector('.hero-slider__next')
+      if (!btn) return
+      btn.classList.add('is-animating')
+    }
+  
+    function resetBorders() {
+      document.querySelectorAll('.hero-slider__next').forEach(btn => {
+        btn.classList.remove('is-animating')
+        void btn.offsetWidth
+      })
+    }
+
+    function updateCounts(swiper) {
+      const realTotal = swiper.el.querySelectorAll(
+        '.swiper-slide:not(.swiper-slide-duplicate)'
+      ).length
+  
+      const currentIndex = swiper.realIndex + 1
+      const formattedCurrent = currentIndex < 10 ? `0${currentIndex}` : currentIndex
+      const formattedTotal = realTotal < 10 ? `0${realTotal}` : realTotal
+  
+      swiper.slides.forEach(slide => {
+        const currentEl = slide.querySelector('.hero-slider__count--current')
+        const totalEl = slide.querySelector('.hero-slider__count--total')
+  
+        if (currentEl && totalEl) {
+          currentEl.textContent = formattedCurrent
+          totalEl.textContent = formattedTotal
+        }
+      })
+    }
+  })
+</script>
+
+{% schema %}
+{
+  "name": "Hero Slider",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress",
+      "label": "Show progress bar",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "next_image",
+          "label": "Next button image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slider"
+    }
+  ]
+}
+{% endschema %}
