@@ -1,5 +1,19 @@
 {{ 'featured-slider.css' | asset_url | stylesheet_tag }}
-<section class="featured-slider" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+<style>
+  .featured-slider {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media (max-width: 767px) {
+    .featured-slider {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+  }
+</style>
+
+<section class="featured-slider">
   <div class="featured-slider__container">
     {% if section.settings.heading != blank %}
       <h2 class="featured-slider__heading">{{ section.settings.heading }}</h2>
@@ -135,7 +149,25 @@
       "max": 200,
       "step": 5,
       "default": 60
-    }
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 30
+    }    
   ],
   "blocks": [
     {

@@ -83,3 +83,21 @@
     margin: auto;
   }
 }
+
+@media (max-width: 767px) {
+  .featured-slider__heading {
+    margin-top: 0;
+    margin-bottom: 56px;
+    font-size: 30px;
+    line-height: 40px;
+  }
+
+  .featured-slider__subheading {
+    font-size: 16px;
+    padding: 0 53px;
+  }
+
+  .featured-slider__swiper {
+    margin-top: 62px;
+  }
+}
