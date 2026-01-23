@@ -33,10 +33,10 @@
             
             <div class="slider-content">
               {% if block.settings.heading != blank %}
-                <h3 class="featured-slider__slide-heading">{{ block.settings.heading }}</h3>
+                <h3 class="featured-slider__slide-heading slider-heading">{{ block.settings.heading }}</h3>
               {% endif %}
               {% if block.settings.subheading != blank %}
-                <p class="featured-slider__slide-subheading">{{ block.settings.subheading }}</p>
+                <p class="featured-slider__slide-subheading slider-subtitle">{{ block.settings.subheading }}</p>
               {% endif %}
             </div>  
           </div>
@@ -51,20 +51,20 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
 
-    const sliderSection = document.querySelector('.featured-slider__swiper');
+    const sliderSection = document.querySelector('.featured-slider');
     const slides = document.querySelectorAll('.featured-slider__swiper .swiper-slide');
 
     function animateSlide(slide) {
-      const heading = slide.querySelector('.slider-content.heading');
-      const subtitle = slide.querySelector('.slider-content.subtitle');
+      const heading = slide.querySelector('.slider-heading');
+      const subtitle = slide.querySelector('.slider-subtitle');
 
       if (heading) heading.classList.add('animate');
       if (subtitle) subtitle.classList.add('animate');
     }
 
     function resetSlide(slide) {
-      const heading = slide.querySelector('.slider-content.heading');
-      const subtitle = slide.querySelector('.slider-content.subtitle');
+      const heading = slide.querySelector('.slider-heading');
+      const subtitle = slide.querySelector('.slider-subtitle');
 
       if (heading) heading.classList.remove('animate');
       if (subtitle) subtitle.classList.remove('animate');
@@ -103,19 +103,20 @@
     });
 
     const observer = new IntersectionObserver(
-      (entries, observer) => {
+      (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-
             animateSlide(swiper.slides[swiper.activeIndex]);
-            observer.unobserve(entry.target);
+            observer.disconnect(); // fire once only
           }
         });
       },
       {
-        threshold: 0.3,
+        root: null,
+        threshold: 0,
+        rootMargin: '0px 0px -40% 0px'
       }
-    );
+    );    
     
     observer.observe(sliderSection);
   });
