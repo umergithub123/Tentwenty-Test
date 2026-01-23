@@ -74,8 +74,8 @@
       effect: "coverflow",
       grabCursor: true,
       centeredSlides: true,
-      slidesPerView: 3,
-      initialSlide: 1,
+      slidesPerView: 1.5,
+      initialSlide: 1.5,
       coverflowEffect: {
         rotate: 50,
         stretch: 0,
@@ -83,6 +83,11 @@
         modifier: 1,
         slideShadows: true,
         spaceBetween: 65,
+      },
+      breakpoints: {
+        767: {
+          slidesPerView: 3,
+        }
       },
       on: {
         init: function () {
