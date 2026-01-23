@@ -36,7 +36,7 @@
                     </svg>
                   </span>
                   <span class="hero-slider__next-inner">
-                    <img class="hero-slider__next-image" src="{{ block.settings.next_image | image_url: width: 200 }}" loading="lazy">
+                    <img loading="eager" width="{{ block.settings.next_image.width }}" height="{{ block.settings.next_image.height }}" class="hero-slider__next-image" src="{{ block.settings.next_image | image_url: width: 200 }}" loading="lazy">
                     <span class="hero-slider__next-label">Next</span>
                   </span>
                 </button>
